@@ -30,4 +30,5 @@ df_grouped <- df_merged %>%
 df_grouped$date <- as.Date(paste0(df_grouped$year, "-", df_grouped$month, "-01"))
 
 # store the final data frame in `gen/data-preparation` as `aggregated_df.csv`
+dir.create('temp')
 write.csv(df_grouped, "temp/aggregated_df.csv")

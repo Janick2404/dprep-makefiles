@@ -1,22 +1,23 @@
 # Main build rule
 
-all:	plot_Antwerp.pdf plot_all.pdf
+all:	output/plot_Antwerp.pdf output/plot_all.pdf
 
-
-reviews.csv	listings.csv:	download.R
-		R	--vanilla	<	download.R
 
 # Sub-builds
 
-aggregated_df.csv: clean.R	reviews.csv	listings.csv
-		r	--vanilla	<	clean.R
 
-pivot_table.csv:	pivot_table.R	aggregated_df.csv
-		r	--vanilla	<	pivot_table.R
+data/reviews.csv	data/listings.csv:	src/download.R
+		R	--vanilla	<	src/download.R
+
+temp/aggregated_df.csv: src/clean.R	data/reviews.csv	data/listings.csv
+		r	--vanilla	<	src/clean.R
+
+temp/pivot_table.csv:	src/pivot_table.R	temp/aggregated_df.csv
+		r	--vanilla	<	src/pivot_table.R
 		
-plot_Antwerp.pdf:	plot_Antwerp.R	pivot_table.csv
-		r	--vanilla	<	plot_Antwerp.R
+output/plot_Antwerp.pdf:	src/plot_Antwerp.R	temp/pivot_table.csv
+		r	--vanilla	<	src/plot_Antwerp.R
 		
-plot_all.pdf: aggregated_df.csv	plot_all.R
-		r	--vanilla	<	plot_all.R
+output/plot_all.pdf: temp/aggregated_df.csv	src/plot_all.R
+		r	--vanilla	<	src/plot_all.R
 		
